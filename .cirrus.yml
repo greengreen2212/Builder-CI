@@ -1,5 +1,5 @@
 env:
-  rcloneconfig: "ENCRYPTED[a1de450e666d4137afb025165a3145f9241c662e520f40429fe1d87c11f45ad2fae8a2093a9639435fc519ccb2f492b5]"
+  RCLONECONFIG_DRIVE: "ENCRYPTED[a1de450e666d4137afb025165a3145f9241c662e520f40429fe1d87c11f45ad2fae8a2093a9639435fc519ccb2f492b5]"
   TG_TOKEN: "ENCRYPTED[c9da95a0941f9e52b31581776a472a0991d66c2ca14efc8d8adca7b04c5a40db2dcb67e5d6a443cae23126eeafb853b1]"
   TG_CHAT_ID: "ENCRYPTED[b3a479d8db3705e2eb9e72976919d3793c955cedea201de827816f44ef36bf1c05766db0f8c0627c8d1afca418ed4828]"
   WORKDIR: "ENCRYPTED[d8dfbe2cc40a744e88b435be4c636b583f2341b4de49f052c1f9fc0303a8c2e32b71a1188906b694a04497014c1db486]"
@@ -22,7 +22,7 @@ task:
   Load-Ccache_background_script:
      - cd $WORKDIR
      - mkdir -p ~/.config/rclone
-     - echo "$rcloneconfig" > ~/.config/rclone/rclone.conf
+     - echo "$RCLONECONFIG_DRIVE" > ~/.config/rclone/rclone.conf
      - name_rom=$(grep init $CIRRUS_WORKING_DIR/build.sh -m 1 | cut -d / -f 4)
      - rclone copy --drive-chunk-size 256M --stats 1s NFS:ccache/$name_rom/ccache.tar.gz $WORKDIR -P
      - tar xzf ccache.tar.gz
