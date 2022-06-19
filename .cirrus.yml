@@ -16,9 +16,6 @@ task:
     cpu: 8
     memory: 32G
 
-  Environment-Check_background_script:
-     - cat /etc/os* && env && nproc && gcc --version && clang --version
-  
   Load-Ccache_background_script:
      - cd $WORKDIR
      - mkdir -p ~/.config/rclone
@@ -28,9 +25,6 @@ task:
      - tar xzf ccache.tar.gz
      - rm -rf ccache.tar.gz
 
-  Storage-Check_background_script:
-     - df -h && lsblk && ls -l -a -h
-     
   Sync-rom_script:
      - set -exv
      - git config --global user.name $CIRRUS_REPO_OWNER
