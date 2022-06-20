@@ -9,6 +9,7 @@ lunch aicp_rosy-userdebug
 export TZ=Asia/Jakarta
 export BUILD_USERNAME=rosy
 export BUILD_HOSTNAME=userdebug
+export NFS_ADD_GCAMGO=true
 curl -s https://api.telegram.org/bot$TG_TOKEN/sendMessage -d chat_id=$TG_CHAT_ID -d text="$(echo "${var_cache_report_config}")"
 brunch rosy #&
 #sleep 70m
