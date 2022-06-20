@@ -8,6 +8,7 @@ function enviroment() {
    device=$(grep unch $CIRRUS_WORKING_DIR/build.sh -m 1 | cut -d ' ' -f 2 | cut -d _ -f 2 | cut -d - -f 1)
    name_rom=$(grep init $CIRRUS_WORKING_DIR/build.sh -m 1 | cut -d / -f 4)
    JOS=$WORKDIR/rom/$name_rom/out/target/product/$device/*.zip
+   file_name="$($WORKDIR/rom/$name_rom/out/target/product/$device/*.zip)
    SHASUM=$WORKDIR/rom/$name_rom/out/target/product/$device/*.zip*sha*
    OTA=$WORKDIR/rom/$name_rom/out/target/product/$device/*ota*.zip
 
@@ -18,8 +19,8 @@ function upload_rom() {
    rm -rf $SHASUM
    rm -rf $OTA
    curl -s -X POST https://api.telegram.org/bot$TG_TOKEN/sendMessage -d chat_id=$TG_CHAT_ID -d disable_web_page_preview=true -d parse_mode=html -d text="<b>Build status:</b>%0A@NiatIngsungLakenMalemJumat <code>Building Rom $name_rom succes [✔️]</code>"
-   rclone copy --drive-chunk-size 256M --stats 1s $JOS NFS:rom/$name_rom -P
-   curl -s -X POST https://api.telegram.org/bot$TG_TOKEN/sendMessage -d chat_id=$TG_CHAT_ID -d disable_web_page_preview=true -d parse_mode=html -d text="Link : https://nfsproject.projek.workers.dev/0/$name_rom/$(cd $WORKDIR/rom/$name_rom/out/target/product/$device && ls *.zip)"
+   rclone copy --drive-chunk-size 256M --stats 1s $JOS NFS:$name_rom/$device -P
+   curl -s -X POST https://api.telegram.org/bot$TG_TOKEN/sendMessage -d chat_id=$TG_CHAT_ID -d disable_web_page_preview=true -d parse_mode=html -d text="Link : https://nfsproject.projek.workers.dev/0:/$name_rom/$device/$file_name"
    msg Upload rom succes..
 }
 
