@@ -33,7 +33,7 @@ function upload_rom() {
    DL_LINK=https://nfsproject.projek.workers.dev/0:/$name_rom/$device/$file_name"
    echo -e \
    "
-   ✅<b>Build Completed Successfully!</b>
+   ✅Build Completed Successfully!
    
    🚀 <b>Info Rom: $(cd $WORKDIR/rom/$name_rom/out/target/product/$device && ls *.zip -m1 | cut -d . -f 1-2)</b>
    📚 <b>Timer Build: $(grep "####" Build-rom.log -m 1 | cut -d '(' -f 2)</b>
