@@ -43,7 +43,7 @@ function upload_rom() {
    📅 <b>Date: $(date +%d\ %B\ %Y)</b>
    🕔 <b>Time Zone: $(date +%T) WIB</b>
    
-   🧑‍💻 <b>By : @NiatIngsungLakenMalemJumat</b>"
+   🧑‍💻 <b>By : @NiatIngsungLakenMalemJumat</b>
    " > tg.html
    TG_TEXT=$(< tg.html)
    telegram_message $TG_TEXT
