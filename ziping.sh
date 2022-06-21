@@ -4,13 +4,24 @@ msg() {
     echo -e "\e[1;32m$*\e[0m"
 }
 
+telegram_message() {
+         curl -s -X POST "https://api.telegram.org/bot$TG_TOKEN/sendMessage" \
+         -d chat_id="$TG_CHAT_ID" \
+         -d parse_mode="HTML" \
+         -d text="$1"
+}
+
 function enviroment() {
    device=$(grep unch $CIRRUS_WORKING_DIR/build.sh -m 1 | cut -d ' ' -f 2 | cut -d _ -f 2 | cut -d - -f 1)
    name_rom=$(grep init $CIRRUS_WORKING_DIR/build.sh -m 1 | cut -d / -f 4)
+   branch_name=$(grep init $CIRRUS_WORKING_DIR/build.sh | awk -F "-b " '{print $2}' | awk '{print $1}')
    JOS=$WORKDIR/rom/$name_rom/out/target/product/$device/*.zip
-   file_name=$($WORKDIR/rom/$name_rom/out/target/product/$device/*.zip)
+   file_name=$(cd $WORKDIR/rom/$name_rom/out/target/product/$device && ls *.zip)
    SHASUM=$WORKDIR/rom/$name_rom/out/target/product/$device/*.zip*sha*
    OTA=$WORKDIR/rom/$name_rom/out/target/product/$device/*ota*.zip
+   rel_date=$(date "+%Y%m%d")
+   DATE_L=$(date +%d\ %B\ %Y)
+   DATE_S=$(date +"%T")
 
 }
 
@@ -18,9 +29,21 @@ function upload_rom() {
    msg Upload rom..
    rm -rf $SHASUM
    rm -rf $OTA
-   curl -s -X POST https://api.telegram.org/bot$TG_TOKEN/sendMessage -d chat_id=$TG_CHAT_ID -d disable_web_page_preview=true -d parse_mode=html -d text="<b>Build status:</b>%0A@NiatIngsungLakenMalemJumat <code>Building Rom $name_rom succes [✔️]</code>"
    rclone copy --drive-chunk-size 256M --stats 1s $JOS NFS:$name_rom/$device -P
-   curl -s -X POST https://api.telegram.org/bot$TG_TOKEN/sendMessage -d chat_id=$TG_CHAT_ID -d disable_web_page_preview=true -d parse_mode=html -d text="Link : https://nfsproject.projek.workers.dev/0:/$name_rom/$device/$file_name"
+   DL_LINK=https://nfsproject.projek.workers.dev/0:/$name_rom/$device/$file_name"
+   TXT_CAPTION="✅<b>Build Completed Successfully!</b>
+   
+   🚀 <b>Info Rom: $(cd $WORKDIR/rom/$name_rom/out/target/product/$device && ls *.zip -m1 | cut -d . -f 1-2)</b>
+   📚 <b>Timer Build: $(grep "####" Build-rom.log -m 1 | cut -d '(' -f 2)</b>
+   📱 <b>Device: $device</b>
+   🖥 <b>Branch Build: $branch_name</b>
+   🔗 <b>Download Link: <a href=\"$DL_LINK\">Here</a>
+   📅 <b>Date: $(date +%d\ %B\ %Y)</b>
+   🕔 <b>Time Zone: $(date +%T) WIB</b>
+   
+   🧑‍💻 <b>By : @NiatIngsungLakenMalemJumat</b>"
+   TG_TEXT="$TXT_CAPTION"
+   telegram_message "$TG_TEXT"
    msg Upload rom succes..
 }
 
