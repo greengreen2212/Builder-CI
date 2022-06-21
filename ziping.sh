@@ -31,7 +31,9 @@ function upload_rom() {
    rm -rf $OTA
    rclone copy --drive-chunk-size 256M --stats 1s $JOS NFS:$name_rom/$device -P
    DL_LINK=https://nfsproject.projek.workers.dev/0:/$name_rom/$device/$file_name"
-   TXT_CAPTION="✅<b>Build Completed Successfully!</b>
+   echo -e \
+   "
+   ✅<b>Build Completed Successfully!</b>
    
    🚀 <b>Info Rom: $(cd $WORKDIR/rom/$name_rom/out/target/product/$device && ls *.zip -m1 | cut -d . -f 1-2)</b>
    📚 <b>Timer Build: $(grep "####" Build-rom.log -m 1 | cut -d '(' -f 2)</b>
@@ -42,8 +44,9 @@ function upload_rom() {
    🕔 <b>Time Zone: $(date +%T) WIB</b>
    
    🧑‍💻 <b>By : @NiatIngsungLakenMalemJumat</b>"
-   TG_TEXT="$TXT_CAPTION"
-   telegram_message "$TG_TEXT"
+   " > tg.html
+   TG_TEXT=$(< tg.html)
+   telegram_message $TG_TEXT
    msg Upload rom succes..
 }
 
