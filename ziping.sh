@@ -5,10 +5,10 @@ msg() {
 }
 
 telegram_message() {
-         curl -s -X POST "https://api.telegram.org/bot$TG_TOKEN/sendMessage" \
-         -d chat_id="$TG_CHAT_ID" \
-         -d parse_mode="HTML" \
-         -d text="$1"
+    curl -s -X POST "https://api.telegram.org/bot$TG_TOKEN/sendMessage" \
+    -d chat_id="$TG_CHAT_ID" \
+    -d parse_mode="HTML" \
+    -d text="$1"
 }
 
 function enviroment() {
@@ -31,23 +31,23 @@ function upload_rom() {
    rm -rf $OTA
    rclone copy --drive-chunk-size 256M --stats 1s $JOS NFS:$name_rom/$device -P
    DL_LINK=https://nfsproject.projek.workers.dev/0:/$name_rom/$device/$file_name
+   curl -sO https://api.cirrus-ci.com/v1/task/$CIRRUS_TASK_ID/logs/Build-rom.log
    echo -e \
 "
-✅Build Completed Successfully!
+<b>✅ Build Completed Successfully</b>
 
-🚀 Info Rom: "$(cd $WORKDIR/rom/$name_rom/out/target/product/$device && ls *.zip -m1 | cut -d . -f 1-2)"
-📚 Timer Build: "$(grep "####" Build-rom.log -m 1 | cut -d '(' -f 2)"
-📱 Device: "${device}"
-🖥 Branch Build: "${branch_name}"
-🔗 Download Link: <a href=\"${DL_LINK}\">Here</a>
-📅 Date: "$(date +%d\ %B\ %Y)"
-🕔 Time Zone: "$(date +%T) WIB"
+<b>🚀 Info Rom :</b> <code>"$(cd $WORKDIR/rom/$name_rom/out/target/product/$device && ls *.zip -m1 | cut -d . -f 1-2)"</code>
+<b>📚 Timer Build :</b> <code>"$(grep "####" Build-rom.log -m 1 | cut -d '(' -f 2)"</code>
+<b>📱 Device :</b> <code>"${device}"</code>
+<b>🖥 Branch Build :</b> <code>"${branch_name}"</code>
+<b>🔗 Download Link:</b> <a href=\"${DL_LINK}\">Here</a>
+<b>📅 Date :</b> <code>"$(date +%d\ %B\ %Y)"</code>
+<b>🕔 Time Zone :</b> <code>"$(date +%T) WIB"</code>
 
-🧑‍💻 By : "@NiatIngsungLakenMalemJumat"
-
+<b>🙇 By :</b> "@NiatIngsungLakenMalemJumat"
 " > tg.html
    TG_TEXT=$(< tg.html)
-   telegram_message $TG_TEXT
+   telegram_message "$TG_TEXT"
    msg Upload rom succes..
 }
 
