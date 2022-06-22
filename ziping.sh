@@ -35,15 +35,15 @@ function upload_rom() {
    "
    ✅Build Completed Successfully!
    
-   🚀 Info Rom: $(cd $WORKDIR/rom/$name_rom/out/target/product/$device && ls *.zip -m1 | cut -d . -f 1-2)
-   📚 Timer Build: $(grep "####" Build-rom.log -m 1 | cut -d '(' -f 2)
-   📱 Device: $device
-   🖥 Branch Build: $branch_name
-   🔗 Download Link: <a href=\"$DL_LINK\">Here</a>
-   📅 Date: $(date +%d\ %B\ %Y)
-   🕔 Time Zone: $(date +%T) WIB
+   🚀 Info Rom: "$(cd $WORKDIR/rom/$name_rom/out/target/product/$device && ls *.zip -m1 | cut -d . -f 1-2)"
+   📚 Timer Build: "$(grep "####" Build-rom.log -m 1 | cut -d '(' -f 2)"
+   📱 Device: "${device}"
+   🖥 Branch Build: "${branch_name}"
+   🔗 Download Link: <a href=\"${DL_LINK}\">Here</a>
+   📅 Date: "$(date +%d\ %B\ %Y)"
+   🕔 Time Zone: "$(date +%T) WIB"
    
-   🧑‍💻 By : @NiatIngsungLakenMalemJumat
+   🧑‍💻 By : "@NiatIngsungLakenMalemJumat"
    " > tg.html
    TG_TEXT=$(< tg.html)
    telegram_message $TG_TEXT
