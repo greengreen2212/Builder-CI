@@ -30,21 +30,22 @@ function upload_rom() {
    rm -rf $SHASUM
    rm -rf $OTA
    rclone copy --drive-chunk-size 256M --stats 1s $JOS NFS:$name_rom/$device -P
-   DL_LINK=https://nfsproject.projek.workers.dev/0:/$name_rom/$device/$file_name"
+   DL_LINK=https://nfsproject.projek.workers.dev/0:/$name_rom/$device/$file_name
    echo -e \
-   "
-   ✅Build Completed Successfully!
-   
-   🚀 Info Rom: "$(cd $WORKDIR/rom/$name_rom/out/target/product/$device && ls *.zip -m1 | cut -d . -f 1-2)"
-   📚 Timer Build: "$(grep "####" Build-rom.log -m 1 | cut -d '(' -f 2)"
-   📱 Device: "${device}"
-   🖥 Branch Build: "${branch_name}"
-   🔗 Download Link: <a href=\"${DL_LINK}\">Here</a>
-   📅 Date: "$(date +%d\ %B\ %Y)"
-   🕔 Time Zone: "$(date +%T) WIB"
-   
-   🧑‍💻 By : "@NiatIngsungLakenMalemJumat"
-   " > tg.html
+"
+✅Build Completed Successfully!
+
+🚀 Info Rom: "$(cd $WORKDIR/rom/$name_rom/out/target/product/$device && ls *.zip -m1 | cut -d . -f 1-2)"
+📚 Timer Build: "$(grep "####" Build-rom.log -m 1 | cut -d '(' -f 2)"
+📱 Device: "${device}"
+🖥 Branch Build: "${branch_name}"
+🔗 Download Link: <a href=\"${DL_LINK}\">Here</a>
+📅 Date: "$(date +%d\ %B\ %Y)"
+🕔 Time Zone: "$(date +%T) WIB"
+
+🧑‍💻 By : "@NiatIngsungLakenMalemJumat"
+
+" > tg.html
    TG_TEXT=$(< tg.html)
    telegram_message $TG_TEXT
    msg Upload rom succes..
