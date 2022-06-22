@@ -16,7 +16,6 @@ function enviroment() {
    name_rom=$(grep init $CIRRUS_WORKING_DIR/build.sh -m 1 | cut -d / -f 4)
    branch_name=$(grep init $CIRRUS_WORKING_DIR/build.sh | awk -F "-b " '{print $2}' | awk '{print $1}')
    JOS=$WORKDIR/rom/$name_rom/out/target/product/$device/*.zip
-   file_name=$(cd $WORKDIR/rom/$name_rom/out/target/product/$device && ls *.zip)
    SHASUM=$WORKDIR/rom/$name_rom/out/target/product/$device/*.zip*sha*
    OTA=$WORKDIR/rom/$name_rom/out/target/product/$device/*ota*.zip
    rel_date=$(date "+%Y%m%d")
@@ -30,6 +29,7 @@ function upload_rom() {
    rm -rf $SHASUM
    rm -rf $OTA
    rclone copy --drive-chunk-size 256M --stats 1s $JOS NFS:$name_rom/$device -P
+   file_name=$(cd $WORKDIR/rom/$name_rom/out/target/product/$device && ls *.zip)
    DL_LINK=https://nfsproject.projek.workers.dev/0:/$name_rom/$device/$file_name
    curl -sO https://api.cirrus-ci.com/v1/task/$CIRRUS_TASK_ID/logs/Build-rom.log
    echo -e \
