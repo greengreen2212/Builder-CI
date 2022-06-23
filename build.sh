@@ -4,3 +4,4 @@ git clone https://github.com/NFS-projects/local_manifest --depth 1 -b 11.1 .repo
 repo sync -c --no-clone-bundle --no-tags --optimized-fetch --prune --force-sync -j10
 
 # build rom
+source build/envsetup.sh
