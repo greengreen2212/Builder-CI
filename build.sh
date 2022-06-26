@@ -5,14 +5,12 @@ repo sync -c --no-clone-bundle --no-tags --optimized-fetch --prune --force-sync 
 
 # build rom
 source build/envsetup.sh
-lunch lineage_rosy-user
-lunch lineage_rosy-userdebug
 export TZ=Asia/Jakarta
 export BUILD_USERNAME=rosy
 export BUILD_HOSTNAME=userdebug
 export NFS_ADD_GCAMGO=true
 curl -s https://api.telegram.org/bot$TG_TOKEN/sendMessage -d chat_id=$TG_CHAT_ID -d text="$(echo "${var_cache_report_config}")"
-brunch rosy &
+brunch lineage_rosy-userdebug &
 sleep 70m
 kill %1
 
