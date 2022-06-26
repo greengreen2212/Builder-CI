@@ -10,6 +10,7 @@ env:
 task:
   name: "Setting Up, Syncing, Building and Uploading"
   only_if: $CIRRUS_REPO_OWNER == 'NFS86'
+  timeout_in: 4h
   container:
     image: anggit86/ubuntu:21.10
     cpu: 8
